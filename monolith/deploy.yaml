@@ -18,7 +18,7 @@ metadata:
   labels:
     service: web
   name: ecomm
-  namespace: monolith
+  namespace: monolith-app
 spec:
   ports:
   - name: "80"
@@ -34,7 +34,7 @@ metadata:
   labels:
     service: web
   name: ecomm
-  namespace: monolith
+  namespace: monolith-app
 spec:
   replicas: 1
   selector:
@@ -49,19 +49,18 @@ spec:
       - name: ecomm
         env:
         - name: DB_HOST
-          value:  mysql:3306
+          value: mysql:3306
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: dbsecret
-              key: password
+              name: mysql-secret
+              key: mysql-password
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: dbsecret
-              key: username
+              name: mysql-secret
+              key: mysql-user
         image: monolith-app:1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
-
