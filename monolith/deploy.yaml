@@ -60,7 +60,7 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: mysql-user
-        image: monolith-app:1.0.0
+        image: monolith-app:1.1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

@@ -18,12 +18,27 @@ package demo.service;
 import demo.model.Product;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class RecommendationService {
 
   @Autowired private ProductService productService;
+
+  private final RestTemplate restTemplate = new RestTemplate();
+  
+  @Value("${recommendation.service.url}")
+  private String recommendationServiceUrl;
+
+  @Value("${recommendation.service.port}")
+  private String recommendationServicePort;
 
   /**
    * Get recommended products list based on user selection
@@ -31,10 +46,24 @@ public class RecommendationService {
    * @param product user selected product
    * @return list of recommended products
    */
-  public List<Product> getRecommendedProducts(Product product) {
-    List<Product> recommendedProducts =
-        productService.findProductsByCategory(product.getCategories());
-    recommendedProducts.remove((Product) product);
-    return recommendedProducts;
+    public List<Product> getRecommendedProducts(Product product) {
+      String url = "http://" + recommendationServiceUrl + ":" + recommendationServicePort + "/recommendations?product_id=" + product.getId();
+      try {
+          ResponseEntity<Product[]> response = restTemplate.getForEntity(url, Product[].class);
+          if (response.getStatusCode() == HttpStatus.OK) {
+              Product[] recommendedProducts = response.getBody();
+              List<Product> validRecommendedProducts = new ArrayList<>();
+              for (Product recommendedProduct : recommendedProducts) {
+                  if (productService.findProductById(recommendedProduct.getId()).isPresent()) {
+                      validRecommendedProducts.add(recommendedProduct);
+                  }
+              }
+              return validRecommendedProducts;
+          } else {
+              return Collections.emptyList();
+          }
+      } catch (RestClientException e) {
+          return Collections.emptyList();
+      }
   }
 }
