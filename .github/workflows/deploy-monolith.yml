@@ -29,7 +29,7 @@ jobs:
 
     - name: Build and push monolith image to ACR
       run: |
-        az acr build --registry tahcacr.azurecr.io --image monolith:1.1.1 --image monolith:latest -f Dockerfile .
+        az acr build --registry tahcacr --image monolith-app:1.1.1 --image monolith-app:latest -f Dockerfile .
       working-directory: monolith
 
     - name: Set up kubectl
@@ -37,13 +37,8 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Use kubelogin
-      uses: azure/use-kubelogin@v1
-      with:
-        version: 'v0.0.10'
-
     - name: Get AKS credentials
-      run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test
+      run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test --admin
 
     - name: Deploy monolith to AKS
       run: kubectl apply -f monolith/deploy.yaml
