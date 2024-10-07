@@ -9,7 +9,7 @@ on:
             - '.github/workflows/deploy-recommendation-service.yml'
     pull_request:
         branches:
-            - github-workflow
+            - main
         paths:
             - 'microservices/recommendation-service-python/**'
             - '.github/workflows/deploy-recommendation-service.yml'

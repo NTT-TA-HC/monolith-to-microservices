@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-monolith.yml'
   pull_request:
     branches:
-      - github-workflow
+      - main
     paths:
       - 'monolith/**'
       - '.github/workflows/deploy-monolith.yml'
