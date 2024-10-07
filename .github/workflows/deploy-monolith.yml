@@ -6,11 +6,13 @@ on:
       - main
     paths:
       - 'monolith/**'
+      - '.github/workflows/deploy-monolith.yml'
   pull_request:
     branches:
       - github-workflow
     paths:
       - 'monolith/**'
+      - '.github/workflows/deploy-monolith.yml'
 
 jobs:
   build-and-deploy-monolith:
