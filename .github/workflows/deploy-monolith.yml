@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'monolith/**'
+  pull_request:
+    branches:
       - github-workflow
     paths:
       - 'monolith/**'
