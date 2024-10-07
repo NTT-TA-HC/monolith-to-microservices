@@ -37,11 +37,10 @@ jobs:
             with:
               version: 'latest'
 
-        #   - name: Install kubelogin
-        #     run: |
-        #         sudo az aks install-cli
-        #         sudo apt-get update
-        #         sudo apt-get install -y kubelogin
+          - name: Set up kubelogin
+            uses: azure/setup-kubelogin@v1
+            with:
+              version: 'v0.0.10'
 
           - name: Get AKS credentials
             run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test

@@ -1,21 +1,21 @@
-name: Build and Deploy Monolith to AKS
+name: Deploy MySQL to AKS
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'monolith/**'
-      - '.github/workflows/deploy-monolith.yml'
+      - 'monolith/mysql-deployment.yaml'
+      - '.github/workflows/deploy-mysql.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'monolith/**'
-      - '.github/workflows/deploy-monolith.yml'
+      - 'monolith/mysql-deployment.yaml'
+      - '.github/workflows/deploy-mysql.yml'
 
 jobs:
-  build-and-deploy-monolith:
+  deploy-mysql:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +26,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Build and push monolith image to ACR
-      run: |
-        az acr build --registry tahcacr.azurecr.io --image monolith:1.1.1 --image monolith:latest -f Dockerfile .
-      working-directory: monolith
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v1
@@ -45,5 +40,5 @@ jobs:
     - name: Get AKS credentials
       run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test
 
-    - name: Deploy monolith to AKS
-      run: kubectl apply -f monolith/deploy.yaml
+    - name: Deploy MySQL to AKS
+      run: kubectl apply -f monolith/mysql-deployment.yaml
