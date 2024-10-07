@@ -1,0 +1,37 @@
+name: Build and Deploy Monolith to AKS
+
+on:
+  push:
+    branches:
+      - main
+      - github-workflow
+    paths:
+      - 'monolith/**'
+
+jobs:
+  build-and-deploy-monolith:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build and push monolith image to ACR
+      run: |
+        az acr build --registry tahcacr.azurecr.io --image monolith:1.1.1 --image monolith:latest -f monolith/Dockerfile .
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Get AKS credentials
+      run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test --admin
+
+    - name: Deploy monolith to AKS
+      run: kubectl apply -f monolith/deploy.yaml
