@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: recommendation-service
-        image: recommendation-service:1.0.0
+        image: tahcacr.azurecr.io/recommendation-service:1.0.0
         ports:
         - containerPort: 8001
 ---
