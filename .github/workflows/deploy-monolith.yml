@@ -29,7 +29,8 @@ jobs:
 
     - name: Build and push monolith image to ACR
       run: |
-        az acr build --registry tahcacr.azurecr.io --image monolith:1.1.1 --image monolith:latest -f monolith/Dockerfile .
+        az acr build --registry tahcacr.azurecr.io --image monolith:1.1.1 --image monolith:latest -f Dockerfile .
+      working-directory: monolith
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v1

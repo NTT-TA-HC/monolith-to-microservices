@@ -28,8 +28,9 @@ jobs:
               creds: ${{ secrets.AZURE_CREDENTIALS }}
 
           - name: Build and push recommendation-service image to ACR
+            working-directory: microservices/recommendation-service-python
             run: |
-              az acr build --registry tahcacr.azurecr.io --image recommendation-service:1.0.0 --image recommendation-service:latest -f microservices/recommendation-service-python/Dockerfile .
+              az acr build --registry tahcacr.azurecr.io --image recommendation-service:1.0.0 --image recommendation-service:latest -f Dockerfile .
 
           - name: Set up kubectl
             uses: azure/setup-kubectl@v1
