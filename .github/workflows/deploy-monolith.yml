@@ -38,7 +38,7 @@ jobs:
         version: 'latest'
 
     - name: Get AKS credentials
-      run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test --admin
+      run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test
 
     - name: Deploy monolith to AKS
       run: kubectl apply -f monolith/deploy.yaml

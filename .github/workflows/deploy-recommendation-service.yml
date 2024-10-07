@@ -38,7 +38,7 @@ jobs:
               version: 'latest'
 
           - name: Get AKS credentials
-            run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test --admin
+            run: az aks get-credentials --resource-group rg_moh_sulaeman --name aks-dev-test
 
           - name: Deploy recommendation service to AKS
             run: kubectl apply -f microservices/recommendation-service-python/deploy-recommendation-service.yaml
