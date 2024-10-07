@@ -1,4 +1,4 @@
-name: Deploy MySQL to AKS
+name: Deploy MySQL to AKS (1st setup only)
 
 on:
   push:
